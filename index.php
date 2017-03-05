@@ -1,3 +1,11 @@
 <?php
 
-echo dirname(__FILE__);
+require __DIR__."/vendor/System/Application.php";
+require __DIR__."/vendor/System/File.php";
+
+use System\Application;
+use System\File;
+
+$file = new File(dirname(__FILE__));
+$app = Application::getInstance($file);
+pre($app);
