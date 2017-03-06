@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>App Ricardo</title>
+    <style>
+        input:required, select:required{
+            bolder: 1px solid red;
+        }
+
+        input:valid, select:valid{
+            border: 1px solid green;
+        }
+        input:invalid, select:invalid{
+            border: 1px solid red;
+        }
+
+    </style>
+</head>
+<body>
+<form action="">
+    <input type="text" placeholder="Numbers" required pattern="\d*">;
+    <input type="email" required>
+    <input type="url" required>
+    <input type="number" required>
+    <select name="" id="">
+        <option value="" selected disabled="">Selected a value</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+    </select>
+</form>
+
+</body>
+</html>
