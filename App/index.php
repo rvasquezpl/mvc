@@ -1,7 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vasq
- * Date: 27/02/2017
- * Time: 22:29
- */
+use System\Application;
+
+$app = Application::getInstance();
+$app->route->add("/posts/:text/:id","Posts/Post");
+pre($app->route->getProperRoute());

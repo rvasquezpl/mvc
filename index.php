@@ -8,4 +8,4 @@ use System\File;
 
 $file = new File(dirname(__FILE__));
 $app = Application::getInstance($file);
-pre($app);
+$app->run();
