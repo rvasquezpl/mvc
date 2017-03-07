@@ -34,6 +34,12 @@ class Application
         $this->session->start();
         $this->request->prepareUrl();
         $this->file->call("App/index.php");
+        list($controller,$method, $arguments) = $this->route->getProperRoute();
+        $output = $this->loader->action($controller,$method,$arguments);
+        $this->response->setOutput($output);
+        $this->response->send();
+
+
     }
 
     public function share($aliasClass, $objClass)
@@ -93,6 +99,11 @@ class Application
             "session" => "System\\Session",
             "request" => "System\\Http\\Request",
             "route"   => "System\\Route",
+            'loader'  => "System\\Loader",
+            'view' => "System\\View\\ViewFactory",
+            'response' => "System\\Http\\Response",
+            'db' =>"System\\Database",
+
         ];
     }
 

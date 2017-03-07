@@ -8,7 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-<h1>Hola desde la vista</h1>
-
+    <h1>hola desde home</h1>
 </body>
 </html>

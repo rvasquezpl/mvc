@@ -33,7 +33,7 @@ class File
 
     public function call($file)
     {
-        require $this->to($file);
+        return require $this->to($file);
     }
 
 }

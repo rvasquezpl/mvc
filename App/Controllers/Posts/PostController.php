@@ -6,10 +6,15 @@
  * Time: 11:15
  */
 
-namespace App\Controllers;
+namespace App\Controllers\Posts;
+use System\Controller;
 
-
-class PostController
+class PostController extends Controller
 {
+
+    public function index()
+    {
+        echo $view =(String)$this->view->render("Posts/index");
+    }
 
 }

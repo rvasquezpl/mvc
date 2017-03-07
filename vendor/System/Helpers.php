@@ -12,3 +12,15 @@
             return (isset($haystack[$key])) ? $haystack[$key] : $default;
         }
     }
+
+
+    if(!function_exists('_e')){
+        /**
+         * Escape the given value
+         * @param string $value
+         * @return string
+         */
+        function _e($value){
+            return htmlspecialchars($value);
+        }
+    }
