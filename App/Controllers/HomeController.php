@@ -16,7 +16,7 @@ class HomeController extends Controller
     public function index()
     {
 
-
+/*
         $valor = $this->db->data([
             'email' => "andrea valentina",
             'first_name'  => 'hola',
@@ -24,16 +24,24 @@ class HomeController extends Controller
         ])->insert('users')->lastId();
 
 
+*/
 
         //$this->db->query('INSERT INTO users SET email = ? ,status=?, first_name= ?','rvasquezpl@gmail.com', 'enabled','vasquez');
 
         /*$valor =$this->db->query('SELECT * FROM users WHERE id = ?', $valor)->fetch();
         pre($valor);
         echo $valor->first_name;*/
-
-        $this->db->data('first_name','VASQUEZ CHAVEZ')
-           // ->where('id = ?',34)
+/*
+        $this->db->data('email','ricardo_av_4@hotmail.com')
+            ->where('id = ?',3)
             ->update('users');
+*/
+    //    $user = $this->db->select('*')->from('users')->orderBy('id','DESC')->fetch();
+    //    $users = $this->db->select('*')->from('users')->orderBy('id','DESC')->fetchAll();
+        // $user = $this->db->select('*')->from('users')->where('id > ? AND id < ?',1 ,4)->fetchAll();
+
+        $this->db->where('id > ?',2)->delete('users');
+
 
     }
 }

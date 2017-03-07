@@ -76,6 +76,12 @@ class Database
     private $offset;
 
     /**
+     * Total Rows
+     * @var int
+     */
+    private $rows = 0;
+
+    /**
      * Joins
      * @var array
      */
@@ -140,6 +146,34 @@ class Database
     }
 
     /**
+     * Set select clause
+     *
+     * @param string $select
+     * @return $this
+     */
+
+    public function select($select)
+    {
+        $this->selects[] = $select;
+        return $this;
+    }
+
+
+    /**
+     * Set Join clause
+     *
+     * @param string $join
+     * @return $this
+     */
+
+    public function join($join)
+    {
+        $this->joins[] = $join;
+        return $this;
+    }
+
+
+    /**
      *  Set the table name
      *
      * @param string $table
@@ -150,6 +184,132 @@ class Database
         $this->table = $table;
         return $this;
     }
+
+
+
+
+    /**
+     * Set Limit and offset
+     *
+     * @param int $limit
+     * @param int $offset
+     * @return $this
+     */
+
+    public function limit($limit, $offset = 0)
+    {
+        $this->limit = $limit;
+        $this->offset = $offset;
+        return $this;
+    }
+
+
+    /**
+     * Ftech Table
+     * This will return only one record
+     *
+     * @param string $table
+     * @return \stdClass / null
+     */
+
+    public function fetch($table = null)
+    {
+        if($table){
+            $this->table($table);
+        }
+
+        $sql = $this->fetchStatement();
+        $result = $this->query($sql,$this->bindings)->fetch();
+        return $result;
+    }
+
+    /**
+     * Fetch ALL Records from TABLE
+     * This will return only one record
+     *
+     * @param string $table
+     * @return array
+     */
+
+    public function fetchAll($table = null)
+    {
+        if($table){
+            $this->table($table);
+        }
+
+        $sql = $this->fetchStatement();
+        $query = $this->query($sql,$this->bindings);
+        $results = $query->fetchAll();
+        $this->rows = $query->rowCount();
+        return $results;
+    }
+
+    /**
+     * Get total rows from Last fetch all statement
+     * @return int
+     */
+    public function rows()
+    {
+        return $this->rows;
+    }
+
+    /**
+     * Prepare Select statement
+     * @return string
+     */
+
+    private function fetchStatement()
+    {
+        $sql = 'SELECT';
+        if($this->selects){
+            $sql .= implode(',', $this->selects);
+        }else{
+            $sql .= '*';
+        }
+
+        $sql .= ' FROM ' . $this->table. ' ';
+
+        if($this->joins){
+            $sql .= implode(' ' , $this->joins);
+        }
+
+        if($this->wheres){
+            $sql .= ' WHERE '. implode(' ', $this->wheres). ' ';
+        }
+
+        if($this->limit){
+            $sql .= ' LIMIT '. $this->limit;
+        }
+
+        if($this->offset){
+            $sql .= ' OFFSET'. $this->offset;
+        }
+
+        if($this->orderBy){
+            $sql .= ' ORDER BY '. implode(' ',$this->orderBy);
+        }
+
+        return $sql;
+    }
+
+
+    /**
+     * Set Order By clause
+     *
+     * @param string $column
+     * @param string $sort
+     * @return $this
+     */
+
+    public function orderBy($orderBy, $sort = 'ASC')
+    {
+        $this->orderBy = [$orderBy, $sort];
+        return $this;
+    }
+
+
+
+
 
     /**
      *  Set the table name
@@ -205,7 +365,6 @@ class Database
         }
         $sql = 'INSERT INTO ' . $this->table . ' SET ';
         $sql .= $this->setFields();
-        pre($this->bindings);
         $this->query($sql, $this->bindings);
         $this->lastId = $this->connection()->lastInsertId();
         return $this;
@@ -226,7 +385,27 @@ class Database
         $sql = 'UPDATE ' . $this->table . ' SET ';
 
         $sql .= $this->setFields();
-        pre($this->bindings);
+        if($this->wheres){
+            $sql .= ' WHERE ' . implode('' , $this->wheres);
+        }
+        $this->query($sql, $this->bindings);
+        return $this;
+    }
+
+    /**
+     * Delete Clause
+     *
+     * @param string $table
+     * @return $this
+     *
+     */
+    public function delete($table = null)
+    {
+        if ($table) {
+            $this->table($table);
+        }
+        $sql = 'DELETE FROM ' . $this->table . ' ';
+
         if($this->wheres){
             $sql .= ' WHERE ' . implode('' , $this->wheres);
         }
@@ -285,16 +464,27 @@ class Database
                 $query->bindValue($key + 1, _e($value));
             }
             $query->execute();
-            pre($this->bindings);
-            $this->bindings = [];
-            $this->data = [];
+            $this->reset();
 
             return $query;
         } catch (PDOException $e) {
-            echo $sql;
-            pre($this->bindings);
+
             echo $e->getMessage();
         }
+    }
+
+    private function reset(){
+
+        //$this->rows = 0;
+        $this->limit = null;
+        $this->offset = null;
+        $this->table = null;
+        $this->bindings = [];
+        $this->data = [];
+        $this->selects = [];
+        $this->joins = [];
+        $this->wheres = [];
+        $this->orderBy = [];
     }
 
     /**
