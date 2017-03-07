@@ -13,7 +13,17 @@ use System\Controller;
 
 class HomeController extends Controller
 {
+
+
     public function index()
+    {
+        //$users = $this->loader->model('Users');
+        $user = $this->loader->model('Users');
+        pre($user->get(1));
+    }
+
+
+    public function prueba()
     {
 
 /*

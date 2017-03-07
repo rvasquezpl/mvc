@@ -13,7 +13,7 @@ class Loader
 {
     private $app;
     private $controllers = [];
-    private $methods = [];
+    private $models= [];
 
     public function __construct(Application $app)
     {
@@ -27,7 +27,7 @@ class Loader
 
     }
 
-    private function controller($controller)
+    public function controller($controller)
     {
         $controllerName = $this->getNameController($controller);
         if (!$this->hasController($controllerName)) {
@@ -62,6 +62,46 @@ class Loader
     private function getController($controllerName)
     {
         return $this->controllers[$controllerName];
+    }
+
+
+
+
+    public function model($model)
+    {
+        $modelName = $this->getNamemodel($model);
+        if (!$this->hasmodel($modelName)) {
+            $this->addmodel($modelName);
+        }
+        return $this->getmodel($modelName);
+    }
+
+    private function getNamemodel($model)
+    {
+        $model .="model";
+        $modelName = "App\\models\\" . $model;
+        return str_replace("/", "\\", $modelName);
+    }
+
+    private function hasmodel($modelName)
+    {
+        return isset($this->models[$modelName]);
+
+    }
+
+    private function addmodel($modelName)
+    {
+        if($this->app->file->exists($modelName.'.php')){
+            $objmodel = new $modelName($this->app);
+            $this->models[$modelName] = $objmodel;
+        }else{
+            die("No se encontro el modelo solicitado");
+        }
+    }
+
+    private function getmodel($modelName)
+    {
+        return $this->models[$modelName];
     }
 
 
