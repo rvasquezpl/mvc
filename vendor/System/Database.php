@@ -19,10 +19,7 @@ class Database
      */
 
     private $app;
-    /**
-     * PDO Connection
-     * @var \Pdo
-     */
+
     private static $connection;
 
     /**
@@ -300,6 +297,7 @@ class Database
      * @param string $sort
      * @return $this
      */
+
 
     public function orderBy($orderBy, $sort = 'ASC')
     {

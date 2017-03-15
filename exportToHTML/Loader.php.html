@@ -1,0 +1,137 @@
+<html>
+<head>
+<title>Loader.php</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #81969a; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(190,80,70); font-weight: bold; }
+.s1 { color: rgb(129,194,121); }
+.s2 { color: rgb(102,116,123); }
+.s3 { color: rgb(197,120,220); font-weight: bold; }
+.s4 { color: rgb(245,249,247); }
+.s5 { color: rgb(213,222,221); }
+.s6 { color: rgb(241,115,128); }
+.s7 { color: rgb(225,232,227); }
+.s8 { color: rgb(222,220,220); }
+.s9 { color: rgb(238,245,245); }
+.s10 { color: rgb(86,182,193); }
+.s11 { color: rgb(4,163,202); }
+.s12 { color: rgb(78,182,193); }
+.ls0 { height: 1px; border-width: 0; color: rgb(70,79,83); background-color:rgb(70,79,83)}
+</style>
+</head>
+<BODY BGCOLOR="#292d35">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+Loader.php</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">&lt;?php</span><span class="s1"> <hr class="ls0"></span><span class="s2">/** 
+ * Created by PhpStorm. 
+ * User: Vasq 
+ * Date: 6/03/2017 
+ * Time: 10:56 
+ */</span><span class="s1"> 
+ 
+</span><span class="s3">namespace </span><span class="s1">System</span><span class="s4">;</span><span class="s1"> 
+ 
+ <hr class="ls0"></span><span class="s3">class </span><span class="s1">Loader 
+</span><span class="s5">{</span><span class="s1"> 
+    </span><span class="s3">private </span><span class="s6">$app</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s3">private </span><span class="s6">$controllers </span><span class="s7">= </span><span class="s8">[]</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s3">private </span><span class="s6">$models</span><span class="s7">= </span><span class="s8">[]</span><span class="s4">;</span><span class="s1"> 
+ 
+    </span><span class="s3">public function </span><span class="s1">__construct</span><span class="s9">(</span><span class="s1">Application </span><span class="s6">$app</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">app </span><span class="s7">= </span><span class="s6">$app</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">public function </span><span class="s1">action</span><span class="s9">(</span><span class="s6">$controller</span><span class="s1">, </span><span class="s6">$method</span><span class="s1">, </span><span class="s6">$arguments </span><span class="s7">= </span><span class="s8">[]</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s6">$objController </span><span class="s7">= </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">controller</span><span class="s9">(</span><span class="s6">$controller</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s10">call_user_func</span><span class="s9">(</span><span class="s8">[</span><span class="s6">$objController</span><span class="s1">,</span><span class="s6">$method</span><span class="s8">]</span><span class="s1">,</span><span class="s6">$arguments</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+ 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">public function </span><span class="s1">controller</span><span class="s9">(</span><span class="s6">$controller</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s6">$controllerName </span><span class="s7">= </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">getNameController</span><span class="s9">(</span><span class="s6">$controller</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s3">if </span><span class="s9">(</span><span class="s7">!</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">hasController</span><span class="s9">(</span><span class="s6">$controllerName</span><span class="s9">)) </span><span class="s5">{</span><span class="s1"> 
+            </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">addController</span><span class="s9">(</span><span class="s6">$controllerName</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s5">}</span><span class="s1"> 
+        </span><span class="s3">return </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">getController</span><span class="s9">(</span><span class="s6">$controllerName</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">getNameController</span><span class="s9">(</span><span class="s6">$controller</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s6">$controller </span><span class="s7">.=</span><span class="s11">&quot;Controller&quot;</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s6">$controllerName </span><span class="s7">= </span><span class="s11">&quot;App</span><span class="s12">\\</span><span class="s11">Controllers</span><span class="s12">\\</span><span class="s11">&quot; </span><span class="s7">. </span><span class="s6">$controller</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s3">return </span><span class="s10">str_replace</span><span class="s9">(</span><span class="s11">&quot;/&quot;</span><span class="s1">, </span><span class="s11">&quot;</span><span class="s12">\\</span><span class="s11">&quot;</span><span class="s1">, </span><span class="s6">$controllerName</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">hasController</span><span class="s9">(</span><span class="s6">$controllerName</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s3">return isset</span><span class="s9">(</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">controllers</span><span class="s8">[</span><span class="s6">$controllerName</span><span class="s8">]</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+ 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">addController</span><span class="s9">(</span><span class="s6">$controllerName</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s3">if</span><span class="s9">(</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">app</span><span class="s7">-&gt;</span><span class="s1">file</span><span class="s7">-&gt;</span><span class="s1">exists</span><span class="s9">(</span><span class="s6">$controllerName</span><span class="s7">.</span><span class="s11">'.php'</span><span class="s9">))</span><span class="s5">{</span><span class="s1"> 
+            </span><span class="s6">$objController </span><span class="s7">= </span><span class="s3">new </span><span class="s6">$controllerName</span><span class="s9">(</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">app</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+            </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">controllers</span><span class="s8">[</span><span class="s6">$controllerName</span><span class="s8">] </span><span class="s7">= </span><span class="s6">$objController</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s5">}</span><span class="s3">else</span><span class="s5">{</span><span class="s1"> 
+            </span><span class="s3">die</span><span class="s9">(</span><span class="s11">&quot;No se encontro el controlador solicitado&quot;</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s5">}</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">getController</span><span class="s9">(</span><span class="s6">$controllerName</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s3">return </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">controllers</span><span class="s8">[</span><span class="s6">$controllerName</span><span class="s8">]</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+ 
+ 
+ 
+    </span><span class="s3">public function </span><span class="s1">model</span><span class="s9">(</span><span class="s6">$model</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s6">$modelName </span><span class="s7">= </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">getNamemodel</span><span class="s9">(</span><span class="s6">$model</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s3">if </span><span class="s9">(</span><span class="s7">!</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">hasmodel</span><span class="s9">(</span><span class="s6">$modelName</span><span class="s9">)) </span><span class="s5">{</span><span class="s1"> 
+            </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">addmodel</span><span class="s9">(</span><span class="s6">$modelName</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s5">}</span><span class="s1"> 
+        </span><span class="s3">return </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">getmodel</span><span class="s9">(</span><span class="s6">$modelName</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">getNamemodel</span><span class="s9">(</span><span class="s6">$model</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s6">$model </span><span class="s7">.=</span><span class="s11">&quot;model&quot;</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s6">$modelName </span><span class="s7">= </span><span class="s11">&quot;App</span><span class="s12">\\</span><span class="s11">models</span><span class="s12">\\</span><span class="s11">&quot; </span><span class="s7">. </span><span class="s6">$model</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s3">return </span><span class="s10">str_replace</span><span class="s9">(</span><span class="s11">&quot;/&quot;</span><span class="s1">, </span><span class="s11">&quot;</span><span class="s12">\\</span><span class="s11">&quot;</span><span class="s1">, </span><span class="s6">$modelName</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">hasmodel</span><span class="s9">(</span><span class="s6">$modelName</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s3">return isset</span><span class="s9">(</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">models</span><span class="s8">[</span><span class="s6">$modelName</span><span class="s8">]</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+ 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">addmodel</span><span class="s9">(</span><span class="s6">$modelName</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s3">if</span><span class="s9">(</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">app</span><span class="s7">-&gt;</span><span class="s1">file</span><span class="s7">-&gt;</span><span class="s1">exists</span><span class="s9">(</span><span class="s6">$modelName</span><span class="s7">.</span><span class="s11">'.php'</span><span class="s9">))</span><span class="s5">{</span><span class="s1"> 
+            </span><span class="s6">$objmodel </span><span class="s7">= </span><span class="s3">new </span><span class="s6">$modelName</span><span class="s9">(</span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">app</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+            </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">models</span><span class="s8">[</span><span class="s6">$modelName</span><span class="s8">] </span><span class="s7">= </span><span class="s6">$objmodel</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s5">}</span><span class="s3">else</span><span class="s5">{</span><span class="s1"> 
+            </span><span class="s3">die</span><span class="s9">(</span><span class="s11">&quot;No se encontro el modelo solicitado&quot;</span><span class="s9">)</span><span class="s4">;</span><span class="s1"> 
+        </span><span class="s5">}</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+    </span><span class="s3">private function </span><span class="s1">getmodel</span><span class="s9">(</span><span class="s6">$modelName</span><span class="s9">)</span><span class="s1"> 
+    </span><span class="s5">{</span><span class="s1"> 
+        </span><span class="s3">return </span><span class="s6">$this</span><span class="s7">-&gt;</span><span class="s1">models</span><span class="s8">[</span><span class="s6">$modelName</span><span class="s8">]</span><span class="s4">;</span><span class="s1"> 
+    </span><span class="s5">}</span><span class="s1"> 
+ 
+ 
+</span><span class="s5">}</span></pre>
+</body>
+</html>

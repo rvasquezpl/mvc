@@ -17,6 +17,23 @@ class HomeController extends Controller
 
     public function index()
     {
+
+        echo assets('images/logo.png');
+        /*
+
+        $this->DBase->data([
+         'last_name' =>'Alberto Rios',
+            'first_name' => 'Ricardo'
+        ])->insert('users');
+
+
+        $this->DBase->data([
+            'email' =>'rvas@yopmail.com'
+        ])->where('id = ?',7)->update('users');*/
+    }
+
+    public function index2()
+    {
         //$users = $this->loader->model('Users');
         $user = $this->loader->model('Users');
         pre($user->get(1));
@@ -32,6 +49,8 @@ class HomeController extends Controller
             'first_name'  => 'hola',
             'status' => 'enabled'
         ])->insert('users')->lastId();
+
+
 
 
 */

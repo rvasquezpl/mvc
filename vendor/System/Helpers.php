@@ -1,4 +1,5 @@
 <?php
+use System\Application;
     if(!function_exists('pre')){
         function pre($value){
             echo "<pre>";
@@ -24,3 +25,15 @@
             return htmlspecialchars($value);
         }
     }
+
+if(!function_exists('assets')){
+    /**
+     * Escape the given value
+     * @param string $path
+     * @return string
+     */
+    function assets($path){
+        $app = Application::getInstance();
+        return $app->url->link('public/' . $path);
+    }
+}

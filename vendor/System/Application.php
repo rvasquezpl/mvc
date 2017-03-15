@@ -103,6 +103,9 @@ class Application
             'view' => "System\\View\\ViewFactory",
             'response' => "System\\Http\\Response",
             'db' =>"System\\Database",
+            'DBase' => "System\\DBase",
+            'url' => "System\\Url",
+            'html' => "System\\Html"
 
         ];
     }
