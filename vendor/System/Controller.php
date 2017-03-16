@@ -12,6 +12,17 @@ namespace System;
 abstract class Controller
 {
     protected $app;
+
+    /**
+     * Error container
+     * @var array
+     */
+    protected $errors = [];
+
+    /**
+     * Controller constructor.
+     * @param Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app= $app;

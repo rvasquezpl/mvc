@@ -44,14 +44,16 @@ class View implements ViewInterface
         if(is_null($this->output)){
             ob_start();
             extract($this->viewData);
-            $this->file->call($this->viewPath);
+            require $this->viewPath;
             $this->output = ob_get_clean();
+
         }
         return $this->output;
     }
 
     public function __toString()
     {
+
         return $this->getOutput();
     }
 

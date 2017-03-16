@@ -20,6 +20,7 @@ class Cookie
 
     public function set($key, $value, $hours = 1800){
         setcookie($key,$value, time() + $hours * 3600,'','',false,true);
+        exit();
     }
 
     public function get($key,$default = "")

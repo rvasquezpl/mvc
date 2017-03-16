@@ -72,4 +72,8 @@ class Route
         return $matches;
     }
 
+    public function notFound($url){
+        $this->notFound = $url;
+    }
+
 }

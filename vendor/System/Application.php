@@ -77,7 +77,7 @@ class Application
             if ($this->isCoreAlias($classAlias)) {
                 $this->share($classAlias, $this->createNewObject($classAlias));
             } else {
-                die("No se encontro la clase solicitada");
+                die("No se encontro la clase solicitada ". $classAlias);
             }
         }
         return $this->container[$classAlias];
@@ -105,7 +105,9 @@ class Application
             'db' =>"System\\Database",
             'DBase' => "System\\DBase",
             'url' => "System\\Url",
-            'html' => "System\\Html"
+            'html' => "System\\Html",
+            'cookie' => "System\\Cookie"
+
 
         ];
     }

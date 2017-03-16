@@ -23,7 +23,7 @@ class Loader
     public function action($controller, $method, $arguments = [])
     {
         $objController = $this->controller($controller);
-        call_user_func([$objController,$method],$arguments);
+        return call_user_func([$objController,$method],$arguments);
 
     }
 
@@ -55,7 +55,7 @@ class Loader
             $objController = new $controllerName($this->app);
             $this->controllers[$controllerName] = $objController;
         }else{
-            die("No se encontro el controlador solicitado");
+            die("No se encontro el controlador solicitado ". $controllerName);
         }
     }
 

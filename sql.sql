@@ -11,7 +11,8 @@ CREATE  TABLE users
   image VARCHAR(50),
   created INT,
   status VARCHAR(20),
-  ip VARCHAR(32)
+  ip VARCHAR(32),
+  code VARCHAR(40)
 );
 
 CREATE TABLE users_groups
