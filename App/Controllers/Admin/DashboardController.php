@@ -21,7 +21,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
+        pre($this->cookie->get('login'));
     }
 
     public function submit()

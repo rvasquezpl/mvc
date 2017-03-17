@@ -7,7 +7,7 @@
  */
 
 namespace System;
-
+use Closure;
 
 class Application
 {
@@ -42,9 +42,12 @@ class Application
 
     }
 
-    public function share($aliasClass, $objClass)
+    public function share($aliasClass, $value)
     {
-        $this->container[$aliasClass] = $objClass;
+        if($value instanceof Closure){
+            $value = call_user_func($value,$this);
+        }
+        $this->container[$aliasClass] = $value;
     }
 
     public function registerClass()

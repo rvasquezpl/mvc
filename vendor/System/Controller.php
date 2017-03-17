@@ -27,6 +27,17 @@ abstract class Controller
     {
         $this->app= $app;
     }
+
+    /**
+     * Econe the given valu to json
+     * @param mixed $data;
+     * @return string
+     */
+    public function json($data)
+    {
+        return json_encode($data);
+    }
+
     public function __get($key)
     {
         return $this->app->get($key);

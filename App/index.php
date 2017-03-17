@@ -8,6 +8,17 @@ $app = Application::getInstance();
 $app->route->add('/admin/login','Admin/Login');
 $app->route->add('/admin/login/submit','Admin/Login@submit', 'POST');
 
+// share admin Layout
+$app->share('adminLayout',function ($app){
+    return $app->loader->controller('Admin/Common/Layout');
+});
+
+
+//Admin Categories Routes
+$app->route->add('/admin/categories','Admin/Categories');
+$app->route->add('/admin/categories/add','Admin/Categories@add','POST');
+$app->route->add('/admin/categories/submit','Admin/Categories@submit','POST');
+
 //dashboard
 $app->route->add('/admin','Admin/Dashboard');
 $app->route->add('/admin/dashboard','Admin/Dashboard');

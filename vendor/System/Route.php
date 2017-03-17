@@ -37,13 +37,25 @@ class Route
         foreach ($this->routes as $route)
         {
 
-            if($this->isMatching($route['pattern']))
+            if($this->isMatching($route['pattern']) AND $this->isMatchingRequestMethod($route['method']))
             {
                 $arguments = $this->getArgumentsFrom($route['pattern']);
                 list($controller,$method) = explode('@',$route['action']);
                 return[$controller,$method,$arguments];
             }
         }
+        return $this->app->url->redirectTo($this->notFound);
+    }
+
+    /**
+     * Determine id the current request method equals
+     * the givrn route method
+     * @param  string $routeMethod
+     * @return bool
+     */
+    private function isMatchingRequestMethod($routeMethod)
+    {
+        return $routeMethod == $this->app->request->method();
     }
 
     private function isMatching($pattern)

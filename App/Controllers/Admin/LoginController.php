@@ -32,7 +32,6 @@ class LoginController extends Controller
 
         $loginModel = $this->loader->model('Login');
         if($loginModel->isLogged()){
-            pre($_COOKIE);
             return $this->url->redirectTo('/admin');
         }
         $data['errors'] =$this->errors;
@@ -43,24 +42,35 @@ class LoginController extends Controller
     {
 
         if($this->isValid()){
-            $loginModel = $this->loader->model('Login');
 
-            $loggedInUser = $loginModel->user();
+                $loginModel = $this->loader->model('Login');
 
-            if($this->request->post('remember')){
-                //save Login data in cookie
+                $loggedInUser = $loginModel->user();
 
-                $this->cookie->set('login',$loggedInUser->code);
-                pre($_COOKIE);
+                if($this->request->post('remember')){
+                    //save Login data in cookie
+                    $this->cookie->set('login',$loggedInUser->code);
 
-            }else{
-                //save Login data in session
-                $this->session->set('login',$loggedInUser->code);
+                }else{
+                    //save Login data in session
+                    $this->session->set('login',$loggedInUser->code);
 
-            }
-            return $this->url->redirectTo('/admin');
+                }
+
+                //return $this->url->redirectTo('/admin');
+                $json =[];
+                $json['cookie'] =$this->cookie->get('login');
+                $json['success'] = 'Welcome Back '. $loggedInUser->first_name;
+
+                $json['redirect'] = $this->url->link('/admin');
+
+                return $this->json($json);
+
         }else{
-            return $this->index();
+            //return $this->index();
+            $json =[];
+            $json['errors'] = $this->errors;
+            return $this->json($json);
         }
     }
 

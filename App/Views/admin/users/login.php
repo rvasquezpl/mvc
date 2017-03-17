@@ -33,10 +33,10 @@
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="<?= url('/admin/login/submit');?>" method="post">
-        <?php if($errors) { ?>
-            <div class="alert alert-danger" > <?php echo implode('<br>',$errors)?></div>
-        <?php } ?>
+    <form action="<?= url('/admin/login/submit');?>" method="post" id="login-form" >
+
+            <div  id="login-results"> </div>
+
       <div class="form-group has-feedback">
         <input type="email" class="form-control" name="email" placeholder="Email" required>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -74,10 +74,49 @@
 <script src="<?= assets("admin/plugins/iCheck/icheck.min.js")?>"></script>
 <script>
   $(function () {
+      var flag = false;
     $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' // optional
+    });
+    loginResults = $('#login-results');
+
+    $('#login-form').on('submit',function (e) {
+        e.preventDefault();
+
+        if(flag === true){
+            return false
+        }
+
+        form = $(this);
+        requestUrl = form.attr('action');
+        requestMethod = form.attr('method');
+        requestData = form.serialize();
+        $.ajax({
+            url: requestUrl,
+            type: requestMethod,
+            data: requestData,
+            dataType: 'json',
+            beforeSend: function () {
+                flag = true;
+                $('button').attr('disabled', true);
+                loginResults.removeClass().addClass('alert alert-info').html('Logging....');
+            },
+            success: function (results) {
+                if(results.errors){
+
+                    loginResults.removeClass().addClass('alert alert-danger').html(results.errors);
+                    $('button').removeAttr('disabled');
+                    flag = false;
+                }else if(results.success){
+                    loginResults.removeClass().addClass('alert alert-success').html(results.success);
+                    if(results.redirect){
+                        window.location.href = results.redirect;
+                    }
+                }
+            }
+        });
     });
   });
 </script>

@@ -33,7 +33,8 @@ class Request
         if(strpos($request,'?')!==false){
                 list($request,$query) = explode('?',$request);
         }
-        $this->url = preg_replace("#^".$script."#",'',$request);
+        $this->url = rtrim(preg_replace("#^".$script."#",'',$request),'/');
+
         $this->baseUrl = $this->server('REQUEST_SCHEME').'://'.$this->server("SERVER_NAME").$script."/";
     }
 
